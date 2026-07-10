@@ -1,0 +1,16 @@
+REPORTE DE CLASIFICACIÓN - CNN OCEANOIA
+=======================================
+                     precision    recall  f1-score   support
+
+atun_aleta_amarilla       0.89      0.93      0.90       200
+      corvina_reina       0.83      0.83      0.83       200
+             dorado       0.81      0.92      0.86       200
+    marlin_pez_vela       0.88      0.99      0.93       200
+              otros       0.97      0.50      0.66       200
+       pargo_mancha       0.74      0.80      0.76       200
+   tiburon_martillo       0.91      1.00      0.95       200
+     tortuga_marina       1.00      0.98      0.99       200
+
+           accuracy                           0.87      1600
+          macro avg       0.88      0.87      0.86      1600
+       weighted avg       0.88      0.87      0.86      1600
