@@ -30,7 +30,7 @@ def main():
     os.makedirs(models_dir, exist_ok=True)
 
     # 1. Configuración de hiperparámetros e imágenes
-    image_shape = (128, 128, 3)
+    image_shape = (150, 150, 3)
     batch_size = 32
     epochs = 20
 
