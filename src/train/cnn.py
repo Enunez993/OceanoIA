@@ -1,11 +1,4 @@
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
 """
-cnn.py
-======
 Script para entrenar la red neuronal convolucional (CNN) de OceanoIA
 para la clasificación de 8 especies marinas.
 Guarda el modelo entrenado en 'models/cnn_especies.keras'.
@@ -29,17 +22,13 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 def main():
     # Directorios de datos
-    train_path = r"c:\BigData\Inteligencia Artificial Aplicada\OceanoIA\data\processed\train"
-    test_path = r"c:\BigData\Inteligencia Artificial Aplicada\OceanoIA\data\processed\test"
-    models_dir = r"c:\BigData\Inteligencia Artificial Aplicada\OceanoIA\models"
+    train_path = r"C:\Users\usuario\Documents\GitHub\OceanoIA\data\processed\train"
+    test_path = r"C:\Users\usuario\Documents\GitHub\OceanoIA\data\processed\test"
+    models_dir = r"C:\Users\usuario\Documents\GitHub\OceanoIA\models"
     os.makedirs(models_dir, exist_ok=True)
     
     # 1. Configuración de hiperparámetros e imágenes
-<<<<<<< Updated upstream
     image_shape = (128, 128, 3)
-=======
-    image_shape = (224, 224, 3)
->>>>>>> Stashed changes
     batch_size = 32
     epochs = 20
     
@@ -210,7 +199,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
