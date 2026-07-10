@@ -1,10 +1,7 @@
 """
-data_prep.py
-============
 Script para preprocesar el dataset de peces (Kaggle) y dividirlo físicamente en 
 conjuntos de entrenamiento (80%) y prueba (20%) bajo 'data/processed/'.
-Aplica la equivalencia de clases para obtener las 8 categorías deseadas de OceanoIA,
-manteniendo un balance de clases perfecto (800 train, 200 test por clase).
+Aplica la equivalencia de clases para obtener las 8 categorías
 """
 
 import os
@@ -13,8 +10,8 @@ from tqdm import tqdm
 
 def main():
     # Rutas base
-    raw_dir = r"c:\BigData\Inteligencia Artificial Aplicada\OceanoIA\data\raw\archive\Fish_Dataset\Fish_Dataset"
-    processed_dir = r"c:\BigData\Inteligencia Artificial Aplicada\OceanoIA\data\processed"
+    raw_dir = r"C:\Users\usuario\Documents\GitHub\OceanoIA\data\raw\archive\Fish_Dataset\Fish_Dataset"
+    processed_dir = r"C:\Users\usuario\Documents\GitHub\OceanoIA\data\processed"
     
     train_dest_base = os.path.join(processed_dir, "train")
     test_dest_base = os.path.join(processed_dir, "test")
@@ -34,6 +31,11 @@ def main():
         os.makedirs(os.path.join(test_dest_base, label), exist_ok=True)
 
     # 1. Copiar clases directas (1 a 1)
+    """
+    Ojo en este paso, se hicieron cambios para poder validar el tema de las alertas cuando un animal 
+    marino está en peligro, por ejemplo la tortuga_marina, sin embargo al no venir en el dataset se jugó con
+    el cambio sustituyendo otro animal con esa categoria para simular esa alerta
+    """
     direct_mappings = {
         "Gilt-Head Bream": "dorado",
         "Hourse Mackerel": "atun_aleta_amarilla",
