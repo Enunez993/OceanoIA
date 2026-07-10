@@ -35,7 +35,7 @@ def main():
     epochs = 20
 
     print("Inicializando Generadores de Imágenes...")
-    # Generador con Aumento de Datos para Entrenamiento (adaptado del cuaderno de flores)
+    # Generador con Aumento de Datos para Entrenamiento
     train_image_gen = ImageDataGenerator(
         rotation_range=20,
         width_shift_range=0.10,
@@ -71,7 +71,7 @@ def main():
     print("\nClases detectadas e índices:")
     print(train_gen.class_indices)
 
-    # 2. Definición del Modelo CNN (arquitectura del proyecto)
+    # 2. Definición del Modelo CNN (arquitectura del proyecto sugerida)
     print("\nConstruyendo arquitectura de la CNN...")
     model = Sequential()
 
