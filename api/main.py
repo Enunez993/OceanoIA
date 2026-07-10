@@ -67,14 +67,14 @@ async def predict_especie(file: UploadFile = File(...)):
         model = _load("cnn", "models/cnn_especies.keras")
 
         img_bytes = await file.read()
-        img = Image.open(io.BytesIO(img_bytes)).convert("RGB").resize((150, 150))
+        img = Image.open(io.BytesIO(img_bytes)).convert("RGB").resize((128, 128))
         arr = np.expand_dims(np.array(img) / 255.0, 0).astype("float32")
 
         preds = model.predict(arr, verbose=0)[0]
 
         clases = [
-            "dorado", "atun_aleta_amarilla", "pargo_mancha", "corvina_reina",
-            "marlin_pez_vela", "tortuga_marina", "tiburon_martillo", "otros",
+            "atun_aleta_amarilla", "corvina_reina", "dorado", "marlin_pez_vela",
+            "otros", "pargo_mancha", "tiburon_martillo", "tortuga_marina"
         ]
         idx = int(np.argmax(preds))
 
