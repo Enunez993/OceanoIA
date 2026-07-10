@@ -1,4 +1,5 @@
 """
+<<<<<<< Updated upstream
 data_prep.py
 ============
 Script para preprocesar el dataset de peces (Kaggle) el que stá en readme
@@ -6,6 +7,11 @@ se divide  físicamente en conjuntos de entrenamiento (80%) y prueba (20%) queda
 que es la ruta establecida
 Aplica una equivalencia de clases para que logermos calzar lo que pidió el profe con lo que está en el dataset
 realmente
+=======
+Script para preprocesar el dataset de peces (Kaggle) y dividirlo físicamente en 
+conjuntos de entrenamiento (80%) y prueba (20%) en 'data/processed/'.
+Aplica la equivalencia de clases para obtener las 8 categorías.
+>>>>>>> Stashed changes
 """
 
 # librerias
@@ -16,9 +22,15 @@ from tqdm import tqdm
 
 def main():
     # Rutas base
+<<<<<<< Updated upstream
     raw_dir = r"c:\Users\usuario\Documents\GitHub\OceanoIA\data\raw\archive\Fish_Dataset\Fish_Dataset"
     processed_dir = r"C:\Users\usuario\Documents\GitHub\OceanoIA\data\processed"
 
+=======
+    raw_dir = r"C:\Users\usuario\Documents\GitHub\OceanoIA\data\raw\archive\Fish_Dataset\Fish_Dataset"
+    processed_dir = r"C:\Users\usuario\Documents\GitHub\OceanoIA\data\processed"
+    
+>>>>>>> Stashed changes
     train_dest_base = os.path.join(processed_dir, "train")
     test_dest_base = os.path.join(processed_dir, "test")
 
@@ -36,11 +48,19 @@ def main():
         os.makedirs(os.path.join(train_dest_base, label), exist_ok=True)
         os.makedirs(os.path.join(test_dest_base, label), exist_ok=True)
 
+<<<<<<< Updated upstream
     # 1. Copiar clases directas (1 a 1) # esto es para establecer la relación
     """
     # Ojo a esto, como en el dataset no vienen imagenes de tortugas ni tiburón martillo lo que hice
     # para validar los puntos extras es tomar el camaron como tortuga y otra especies haciendolas pasar por las
     # especies en peligro para que nos salte la alerta.
+=======
+    # 1. Copiar clases directas (1 a 1)
+    """
+    Ojo en este paso, se hicieron cambios para poder validar el tema de las alertas cuando un animal 
+    marino está en peligro, por ejemplo la tortuga_marina, sin embargo al no venir en el dataset se jugó con
+    el cambio sustituyendo otro animal con esa categoria para simular esa alerta
+>>>>>>> Stashed changes
     """
     direct_mappings = {
         "Gilt-Head Bream": "dorado",
