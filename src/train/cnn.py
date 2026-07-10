@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 """
 cnn.py
 ======
@@ -30,7 +35,11 @@ def main():
     os.makedirs(models_dir, exist_ok=True)
     
     # 1. Configuración de hiperparámetros e imágenes
+<<<<<<< Updated upstream
     image_shape = (128, 128, 3)
+=======
+    image_shape = (224, 224, 3)
+>>>>>>> Stashed changes
     batch_size = 32
     epochs = 20
     
@@ -201,3 +210,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
