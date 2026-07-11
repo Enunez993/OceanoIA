@@ -119,7 +119,6 @@ Endpoints disponibles:
 | Dataset | Uso | URL |
 |---------|-----|-----|
 | Large-Scale Fish Dataset | CNN | https://www.kaggle.com/datasets/crowww/a-large-scale-fish-dataset |
-| Fish4Knowledge | CNN | https://homepages.inf.ed.ac.uk/rbf/Fish4Knowledge/ |
 | Open-Meteo Marine API | RNN | https://open-meteo.com/en/docs/marine-weather-api |
 | NOAA ERDDAP | RNN | https://coastwatch.pfeg.noaa.gov/erddap/ |
 | IMN Costa Rica | RNN | https://www.imn.ac.cr/ |
@@ -160,7 +159,7 @@ Endpoints disponibles:
 
 ## 🤝 Equipo
 
-- [Nombre del estudiante 1] — *email@cuc.ac.cr*
+- [Eduardo Núñez Morales] — *702080987@cuc.ac.cr*
 - [Nombre del estudiante 2] — *email@cuc.ac.cr*
 
 **Profesor:** [Nombre del docente]
