@@ -99,6 +99,7 @@ with tab1:
             df_probs = pd.DataFrame({"Especie": especies, "Probabilidad": preds})
             st.bar_chart(df_probs.set_index("Especie"))
 
+
 # ===================== TAB 2: RNN Pronóstico =====================
 with tab2:
     st.header("🌊 Pronóstico oceánico — próximas 72 horas")
@@ -114,18 +115,26 @@ with tab2:
     if st.button("Obtener pronóstico"):
         with st.spinner("Descargando datos de Open-Meteo Marine..."):
             try:
-                from src.marine_api import get_zone_forecast
-                df = get_zone_forecast(zona, days=3)
+                import joblib
+                import numpy as np
+                import tensorflow as tf
+                from rnn import cargar_datos, preparar_features, desescalar_target
+
+                WINDOW_IN = 30
+                DIAS_PRONOSTICO = 3
+                TARGETS = ["Oleaje_m", "Marea_m", "SST_Copernicus"]
+
+                df = cargar_datos()
+                df, features = preparar_features(df)
 
                 col1, col2, col3 = st.columns(3)
-                col1.metric("Oleaje máx. 72h", f"{df['wave_height'].max():.2f} m")
-                col2.metric("SST promedio",     f"{df['sea_surface_temperature'].mean():.1f} °C")
-                col3.metric("Período promedio", f"{df['wave_period'].mean():.1f} s")
 
-                st.line_chart(df.set_index("time")[["wave_height"]],
-                              use_container_width=True)
-                st.line_chart(df.set_index("time")[["sea_surface_temperature"]],
-                              use_container_width=True)
+                col1.metric("Oleaje máx. 72h", f"{df['Oleaje_m'].max():.2f} m")
+                col2.metric("SST promedio",     f"{df['SST_Copernicus'].mean():.1f} °C")
+                col3.metric("Período promedio", f"{df['Periodo_Oleaje_s'].mean():.1f} s")
+
+                st.line_chart(df[["Oleaje_m"]], use_container_width=True)
+                st.line_chart(df[["SST_Copernicus"]], use_container_width=True)
             except Exception as e:
                 st.error(f"Error: {e}")
 
