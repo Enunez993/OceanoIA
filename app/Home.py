@@ -112,6 +112,17 @@ with tab2:
     ]
     zona = st.selectbox("Selecciona una zona costera:", zonas)
 
+    # Coordenadas aproximadas de cada zona costera de Costa Rica
+    zonas_cord = {
+        "golfo_nicoya":     (9.97, -84.83),
+        "golfo_dulce":      (8.70, -83.30),
+        "pacifico_norte":   (10.60, -85.70),
+        "pacifico_central": (9.60, -84.70),
+        "pacifico_sur":     (8.50, -83.50),
+        "caribe_norte":     (10.50, -83.60),
+        "caribe_sur":       (9.60, -82.80),
+    }
+
     if st.button("Obtener pronóstico"):
         with st.spinner("Descargando datos de Open-Meteo Marine..."):
             try:
@@ -135,8 +146,104 @@ with tab2:
 
                 st.line_chart(df[["Oleaje_m"]], use_container_width=True)
                 st.line_chart(df[["SST_Copernicus"]], use_container_width=True)
+
+
+                window_in = 30
+                dias_p = 3
+                targets = ["Oleaje_m", "Marea_m", "SST_Copernicus"]
+
+                df_base, features = preparar_features(cargar_datos())
+
+                lat, lon = zonas_cord[zona]
+                fecha_fin = df_base.index[-1]
+                fecha_ini = fecha_fin - pd.Timedelta(days=window_in + 5)
+
+                resp = requests.get(
+                    "https://marine-api.open-meteo.com/v1/marine",
+                    params={
+                        "latitude": lat,
+                        "longitude": lon,
+                        "hourly": "wave_height,wave_period,wave_direction,sea_level_height_msl",
+                        "start_date": fecha_ini.date().isoformat(),
+                        "end_date": fecha_fin.date().isoformat(),
+                        "timezone": "America/Costa_Rica",
+                    },
+                    timeout=30,
+                )
+                resp.raise_for_status()
+                hourly = resp.json()["hourly"]
+
+                df_zona = pd.DataFrame({
+                    "Fecha": pd.to_datetime(hourly["time"]),
+                    "Oleaje_m": hourly["wave_height"],
+                    "Periodo_Oleaje_s": hourly["wave_period"],
+                    "Direccion_Oleaje_deg": hourly["wave_direction"],
+                    "Marea_m": hourly["sea_level_height_msl"],
+                }).set_index("Fecha")
+                df_zona = df_zona.resample("D").mean().interpolate()
+
+
+                df_final = df_zona.copy()
+                for col in features:
+                    if col not in df_final.columns:
+                        df_final[col] = df_base[col].reindex(df_final.index, method="nearest")
+                df_final = df_final[features].tail(window_in).interpolate()
+
+                #Correr el modelo LSTM entrenado sobre la ventana de la zona
+                if len(df_final) < window_in:
+                    st.warning("No hay suficientes dias de datos para esta zona todavía.")
+                else:
+                    st.markdown(f"**Pronostico LSTM próximos {dias_p} días ({zona}):**")
+                    resultados = {}
+
+                    # Generar las fechas futuras correctas para el pronóstico
+                    fechas_pred = pd.date_range(df_final.index[-1] + pd.Timedelta(days=1), periods=dias_p,
+                                                freq="D")
+
+                    for target in targets:
+                        ruta_modelo = f"models/lstm_{target.lower()}.keras"
+                        ruta_scaler = f"models/scaler_{target.lower()}.pkl"
+                        if not (Path(ruta_modelo).exists() and Path(ruta_scaler).exists()):
+                            continue
+
+                        modelo = tf.keras.models.load_model(ruta_modelo)
+                        scaler = joblib.load(ruta_scaler)
+                        target_idx = features.index(target)
+
+                        data_scaled = scaler.transform(df_final[features].values)
+                        ultima_ventana = np.expand_dims(data_scaled[-window_in:], axis=0)
+
+                        pred_scaled = modelo.predict(ultima_ventana, verbose=0)
+                        pred = desescalar_target(pred_scaled, scaler, target_idx, len(features))[0]
+
+                        # Guarda los valores correspondientes a los dias futuros
+                        resultados[target] = pred[:dias_p]
+
+                    if resultados:
+                        # Crea el DataFrame exclusivo con las predicciones del futuro
+                        df_pronostico = pd.DataFrame(resultados, index=fechas_pred).round(2)
+
+                        #leen los valores máximos y promedios del PRONOSTICO FUTURO
+                        col1, col2, col3 = st.columns(3)
+                        col1.metric("Oleaje máx. 72h", f"{df_pronostico['Oleaje_m'].max():.2f} m")
+                        col2.metric("SST promedio", f"{df_pronostico['SST_Copernicus'].mean():.1f} °C")
+                        # Agregamos la marea promedio del pronóstico para usar la tercera columna
+                        col3.metric("Marea máx. 72h", f"{df_pronostico['Marea_m'].max():.2f} m")
+
+                        #muestran las curvas de las próximas 72 horas predichas
+                        st.line_chart(df_pronostico[["Oleaje_m"]], use_container_width=True)
+                        st.line_chart(df_pronostico[["SST_Copernicus"]], use_container_width=True)
+
+                        # Muestra la tabla con las predicciones calculadas
+                        st.dataframe(df_pronostico)
+                    else:
+                        st.info("Todavía no hay modelos entrenados en /models.")
+
+
             except Exception as e:
                 st.error(f"Error: {e}")
+
+
 
 # ===================== TAB 3: ANN + Mapa =====================
 with tab3:
@@ -189,6 +296,9 @@ with tab3:
         except ImportError:
             st.warning("Instala `folium` y `streamlit-folium` para ver el mapa.")
 
+
+
+
 # ===================== TAB 4: Dashboard =====================
 with tab4:
     st.header("📊 Dashboard integrado")
@@ -212,7 +322,10 @@ with tab4:
 
     st.markdown("---")
     st.markdown(
-        "**Equipo:** [tu equipo]  ·  **Profesor:** [docente]  ·  "
+        "<div style='text-align: center; color: gray; font-size: 0.85em;'>"
+        "**Equipo:** [Eduardo Nuñez Morales,Daniel Najera Gomez, Stephanie Rodriguez Cortes]  ·  **Profesor:** [Osvaldo Gonzalez Chavez]  ·  <br>"
         "**Curso:** Inteligencia Artificial 2026  ·  "
-        "**Entrega:** 18 de julio 2026"
+        "**Entrega:** 13 de julio 2026"
+        "</div>",
+        unsafe_allow_html=True
     )
