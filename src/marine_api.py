@@ -95,3 +95,40 @@ if __name__ == "__main__":
     if df is not None:
         print("\nMuestra de la tabla final:")
         print(df.head())
+
+
+import requests
+import pandas as pd
+
+# Coordenadas de cada zona (la app las importa como ZONAS_CR)
+ZONAS_CR = {
+    "golfo_nicoya":     (9.80, -84.80),
+    "golfo_dulce":      (8.60, -83.30),
+    "pacifico_norte":   (10.60, -85.70),
+    "pacifico_central": (9.50, -84.30),
+    "pacifico_sur":     (8.70, -83.50),
+    "caribe_norte":     (10.50, -83.05),
+    "caribe_sur":       (9.60, -82.70),
+}
+
+
+def get_zone_forecast(zone, days=3, **kwargs):
+    """Pronóstico marino de una zona. Devuelve 'time' como COLUMNA
+    y los nombres originales de Open-Meteo (los que usa Home.py)."""
+    if zone not in ZONAS_CR:
+        raise ValueError(f"Zona desconocida: {zone}")
+    lat, lon = ZONAS_CR[zone]
+
+    r = requests.get("https://marine-api.open-meteo.com/v1/marine", params={
+        "latitude": lat,
+        "longitude": lon,
+        "hourly": ["wave_height", "wave_period", "wave_direction",
+                   "sea_surface_temperature", "sea_level_height_msl"],
+        "forecast_days": days,
+        "timezone": "America/Costa_Rica",
+    }, timeout=30)
+    r.raise_for_status()
+
+    df = pd.DataFrame(r.json()["hourly"])
+    df["time"] = pd.to_datetime(df["time"])
+    return df
