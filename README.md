@@ -119,12 +119,33 @@ Endpoints disponibles:
 | Dataset | Uso | URL |
 |---------|-----|-----|
 | Large-Scale Fish Dataset | CNN | https://www.kaggle.com/datasets/crowww/a-large-scale-fish-dataset |
-| Open-Meteo Marine API | RNN | https://open-meteo.com/en/docs/marine-weather-api |
-| NOAA ERDDAP | RNN | https://coastwatch.pfeg.noaa.gov/erddap/ |
-| IMN Costa Rica | RNN | https://www.imn.ac.cr/ |
+| Open-Meteo Marine API | RNN (oleaje, marea) | https://open-meteo.com/en/docs/marine-weather-api |
+| Copernicus Marine Service | RNN (SST) | https://data.marine.copernicus.eu/ |
+| Meteostat | RNN (viento, presión) | https://meteostat.net/ |
 | Sintético (sklearn) | ANN | Generado con `make_classification` + reglas INCOPESCA |
-
 ---
+El sistema combina tres fuentes independientes y reales, más una variable
+calculada localmente:
+
+| Dataset | Fuente | Variables que aporta | Requiere credenciales |
+|---------|--------|----------------------|-----------------------|
+| 1 | **Open-Meteo Marine API** | Oleaje, periodo y dirección de ola, marea (nivel del mar) | No |
+| 2 | **Copernicus Marine Service** | Temperatura superficial del mar (SST) | Sí (registro gratuito) |
+| 3 | **Meteostat v2** (estaciones GHCN/ISD) | Viento, presión, temperatura del aire, humedad, nubosidad | No |
+| — | Cálculo astronómico | Fase lunar | No |
+
+Configuración de credenciales — Copernicus Marine
+
+El Dataset 2 (SST) descarga datos del Copernicus Marine Service, que requiere
+una cuenta gratuita. Registro: https://data.marine.copernicus.eu/register
+
+Hay dos formas de autenticarse:
+
+| Opción | Método | Comando | Ventaja |
+|--------|--------|---------|---------|
+| **A**  | Iniciar sesión una sola vez | `copernicusmarine login` | Guarda las credenciales de forma segura |
+| **B** | Variables de entorno | `setx CMEMS_USER "tu_usuario"` <br> `setx CMEMS_PASS "tu_contraseña"` | El script las lee automáticamente si existen |
+
 
 ## 📈 Métricas objetivo
 
@@ -160,10 +181,10 @@ Endpoints disponibles:
 ## 🤝 Equipo
 
 - [Eduardo Núñez Morales] — *702080987@cuc.ac.cr*
-- [Nombre del estudiante 2] — *email@cuc.ac.cr*
+- [Daniel Nájera Gómez] — *305620467@cuc.cr*
 
-**Profesor:** [Nombre del docente]
-**Curso:** Inteligencia Artificial 2026
+**Profesor:** [Osvaldo Gonzalez Chaves]  
+**Curso:** Inteligencia Artificial 2026  
 **Fecha de entrega:** 18 de julio de 2026
 
 ---

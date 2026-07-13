@@ -10,8 +10,11 @@ from tqdm import tqdm
 
 def main():
     # Rutas base
-    raw_dir = r"c:\BigData\Inteligencia Artificial Aplicada\OceanoIA\data\raw\archive\Fish_Dataset\Fish_Dataset"
-    processed_dir = r"c:\BigData\Inteligencia Artificial Aplicada\OceanoIA\data\processed"
+    # Raíz del proyecto (la misma que abrís en PyCharm)
+    BASE_DIR = r"C:\Users\Daniel Nájera\Documents\GitHub\OceanoIA"
+
+    raw_dir = os.path.join(BASE_DIR, "data", "raw", "archive", "Fish_Dataset", "Fish_Dataset")
+    processed_dir = os.path.join(BASE_DIR, "data", "processed")
     
     train_dest_base = os.path.join(processed_dir, "train")
     test_dest_base = os.path.join(processed_dir, "test")
