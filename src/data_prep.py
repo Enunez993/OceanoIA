@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 def main():
     # Rutas base
-    # Raíz del proyecto (la misma que abrís en PyCharm)
+    # Raíz del proyecto 
     BASE_DIR = r"C:\Users\Daniel Nájera\Documents\GitHub\OceanoIA"
 
     raw_dir = os.path.join(BASE_DIR, "data", "raw", "archive", "Fish_Dataset", "Fish_Dataset")
@@ -202,9 +202,7 @@ def extraer_datos_copernicus(ruta_guardado="data/raw/copernicus_sst.csv"):
 
     try:
         print("-> Descargando subconjunto satelital (NetCDF)...")
-        # Se pasan usuario y contraseña AQUÍ mismo: así no se queda pidiendo
-        # credenciales por consola (ese era el motivo del bloqueo).
-        # 'force_download' se ELIMINÓ en la v2 del toolbox -> no se usa.
+        # Se pasan usuario y contraseña AQUÍ mismo
         copernicusmarine.subset(
             dataset_id=dataset_id,
             variables=["analysed_sst"],
@@ -309,7 +307,7 @@ def extraer_datos_meteostat(ruta_guardado="data/raw/dataset3_meteostat.csv",
     ini = date.fromisoformat(inicio)
     fin_ = date.fromisoformat(fin)
 
-    # Estaciones más cercanas (para citarlas en el informe)
+    # Estaciones más cercanas
     estaciones = ms.stations.nearby(punto, limit=4)
     try:
         print("  Estaciones cercanas encontradas:")
