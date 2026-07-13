@@ -73,8 +73,8 @@ async def predict_especie(file: UploadFile = File(...)):
         preds = model.predict(arr, verbose=0)[0]
 
         clases = [
-            "dorado", "atun_aleta_amarilla", "pargo_mancha", "corvina_reina",
-            "marlin_pez_vela", "tortuga_marina", "tiburon_martillo", "otros",
+            "atun_aleta_amarilla", "corvina_reina", "dorado", "marlin_pez_vela",
+            "otros", "pargo_mancha", "tiburon_martillo", "tortuga_marina"
         ]
         idx = int(np.argmax(preds))
 
