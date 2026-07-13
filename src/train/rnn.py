@@ -26,9 +26,9 @@ import tensorflow as tf
 np.random.seed(42)
 tf.random.set_seed(42)
 
-RUTA_BASE = os.path.abspath(os.path.dirname(__file__))
-RUTA_DATOS = os.path.join(RUTA_BASE, "data", "processed", "oceano_merged.csv")
-RUTA_MODELOS = os.path.join(RUTA_BASE, "models")
+ruta_base = os.path.abspath(os.path.dirname(__file__))
+ruta_datos = os.path.join(ruta_base, "data", "processed", "oceano_merged.csv")
+ruta_modelos = os.path.join(ruta_base, "models")
 
 FEATURES_DISPONIBLES = [
     "Oleaje_m", "Periodo_Oleaje_s", "Direccion_Oleaje_deg", "Marea_m",
@@ -37,15 +37,15 @@ FEATURES_DISPONIBLES = [
 ]
 
 
-def cargar_datos(ruta=RUTA_DATOS):
-    """Carga oceano_merged.csv igual que el EDA: indexado por Fecha, ordenado."""
+def cargar_datos(ruta=ruta_datos):
+    #Carga oceano_merged.csv indexado por Fecha, ordenado
     df = pd.read_csv(ruta, parse_dates=["Fecha"], index_col="Fecha")
     df = df.sort_index()
     return df
 
 
 def preparar_features(df):
-    """Devuelve solo las columnas de interés que sí existan en el CSV real."""
+    #Devuelve solo las columnas de interés que sí existan en el CSV real
     features = [c for c in FEATURES_DISPONIBLES if c in df.columns]
     faltantes = df[features].isna().sum()
     if faltantes.sum() > 0:
@@ -54,7 +54,7 @@ def preparar_features(df):
 
 
 def crear_secuencias(arr, window_in, window_out, target_idx):
-    """Ventaneo: window_in días de historia -> window_out días a predecir."""
+    #window_in días de historia -> window_out días a predecir
     X, y = [], []
     for i in range(len(arr) - window_in - window_out):
         X.append(arr[i: i + window_in])
@@ -63,7 +63,7 @@ def crear_secuencias(arr, window_in, window_out, target_idx):
 
 
 def desescalar_target(y_scaled, scaler, target_idx, n_features):
-    """Devuelve las predicciones de la escala 0-1 a las unidades reales."""
+    #Devuelve las predicciones de la escala 0-1 a las unidades reales
     dummy = np.zeros((y_scaled.shape[0] * y_scaled.shape[1], n_features))
     dummy[:, target_idx] = y_scaled.flatten()
     inv = scaler.inverse_transform(dummy)[:, target_idx]
@@ -71,7 +71,7 @@ def desescalar_target(y_scaled, scaler, target_idx, n_features):
 
 
 def construir_modelo(window_in, n_features, window_out):
-    """Arquitectura fija del proyecto: LSTM(100) -> LSTM(50) -> Dropout(0.2) -> Dense."""
+    #Arquitectura fija del proyecto: LSTM(100) -> LSTM(50) -> Dropout(0.2) -> Dense
     model = Sequential([
         LSTM(100, return_sequences=True, input_shape=(window_in, n_features)),
         LSTM(50),
@@ -83,7 +83,7 @@ def construir_modelo(window_in, n_features, window_out):
 
 
 def evaluar(model, X_test, y_test, scaler, target_idx, n_features):
-    """RMSE y MAE en unidades reales, más el baseline de persistencia."""
+    #RMSE y MAE en unidades reales, más el baseline de persistencia
     y_pred_scaled = model.predict(X_test, verbose=0)
     y_pred = desescalar_target(y_pred_scaled, scaler, target_idx, n_features)
     y_true = desescalar_target(y_test, scaler, target_idx, n_features)
@@ -116,7 +116,7 @@ def entrenar(target="Oleaje_m", window_in=30, window_out=3, epochs=100, batch_si
     target_idx = features.index(target)
     data = df[features].values
 
-    # Split cronológico 80/20 (NUNCA aleatorio en series temporales)
+    # Split cronológico 80/20
     split_idx = int(len(data) * 0.8)
     train_raw, test_raw = data[:split_idx], data[split_idx:]
 
@@ -158,9 +158,9 @@ def entrenar(target="Oleaje_m", window_in=30, window_out=3, epochs=100, batch_si
     final_model.fit(X_full, y_full, epochs=max(epochs // 2, 30), batch_size=batch_size, verbose=1)
 
     # Guardar modelo + scaler
-    os.makedirs(RUTA_MODELOS, exist_ok=True)
-    ruta_modelo = os.path.join(RUTA_MODELOS, f"lstm_{target.lower()}.keras")
-    ruta_scaler = os.path.join(RUTA_MODELOS, f"scaler_{target.lower()}.pkl")
+    os.makedirs(ruta_modelos, exist_ok=True)
+    ruta_modelo = os.path.join(ruta_modelos, f"lstm_{target.lower()}.keras")
+    ruta_scaler = os.path.join(ruta_modelos, f"scaler_{target.lower()}.pkl")
     final_model.save(ruta_modelo)
     joblib.dump(scaler, ruta_scaler)
 
