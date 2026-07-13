@@ -71,19 +71,25 @@ with tab1:
             st.image(uploaded, caption="Imagen cargada", use_column_width=True)
         with col2:
             with st.spinner("Analizando..."):
-                # ===== Demo placeholder (descomentar cuando el modelo esté entrenado) =====
-                # import tensorflow as tf
-                # from tensorflow.keras.preprocessing import image
-                # model = tf.keras.models.load_model("models/cnn_especies.keras")
-                # img = image.load_img(uploaded, target_size=(128, 128))
-                # arr = np.expand_dims(image.img_to_array(img) / 255.0, 0)
-                # preds = model.predict(arr)[0]
-                # ...
-
-                # Demo simulada
-                especies = ["Dorado", "Atún aleta amarilla", "Pargo mancha",
-                            "Corvina reina", "Marlín", "Tortuga marina"]
-                preds = np.random.dirichlet(np.ones(len(especies)))
+                # ===== Modelo Real Cargado =====
+                import tensorflow as tf
+                from tensorflow.keras.preprocessing import image
+                
+                # Cargar el modelo
+                model = tf.keras.models.load_model("models/cnn_especies.keras")
+                
+                # Cargar y preprocesar la imagen
+                img = image.load_img(uploaded, target_size=(128, 128))
+                arr = np.expand_dims(image.img_to_array(img) / 255.0, 0).astype("float32")
+                
+                # Predecir
+                preds = model.predict(arr, verbose=0)[0]
+                
+                # Mapear a las clases con nombres legibles
+                especies = [
+                    "Atún aleta amarilla", "Corvina reina", "Dorado", "Marlín",
+                    "Otros", "Pargo mancha", "Tiburón martillo", "Tortuga marina"
+                ]
                 idx = int(np.argmax(preds))
 
             st.success(f"**Especie:** {especies[idx]}")
