@@ -201,7 +201,7 @@ with tab4:
         "Módulo": ["CNN", "RNN/LSTM", "ANN"],
         "Dataset principal": [
             "Large-Scale Fish Dataset (Kaggle)",
-            "Open-Meteo Marine API + NOAA + IMN",
+            "Open-Meteo Marine API + COPERNICUS+ METEOSTAT",
             "Sintético (sklearn) + reglas INCOPESCA",
         ],
         "Métrica":  ["Accuracy / F1 ≥ 90%", "RMSE / MAE", "Precision / Recall ≥ 85%"],
@@ -209,7 +209,7 @@ with tab4:
 
     st.markdown("---")
     st.markdown(
-        "**Equipo:** [tu equipo]  ·  **Profesor:** [docente]  ·  "
+        "  **Profesor:** [Osvaldo González Chaves]  ·  "
         "**Curso:** Inteligencia Artificial 2026  ·  "
-        "**Entrega:** 18 de julio 2026"
+        "**Entrega:** 20 de julio 2026"
     )
