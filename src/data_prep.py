@@ -177,6 +177,8 @@ def extraer_datos_open_meteo(ruta_guardado="data/raw/open_meteo_marine.csv"):
 # CREDENCIALES COPERNICUS
 # Recordar no dejar credenciales en el codigo.
 # ---------------------------------------------------------------------------
+# Credenciales SOLO por variable de entorno: nunca hardcodeadas en el repo.
+# Configurar con:  setx CMEMS_USER "usuario"  /  setx CMEMS_PASS "contrasena"
 CMEMS_USER = os.environ.get("CMEMS_USER")
 CMEMS_PASS = os.environ.get("CMEMS_PASS")
 
@@ -213,6 +215,8 @@ def extraer_datos_copernicus(ruta_guardado="data/raw/copernicus_sst.csv"):
             maximum_latitude=10.2,
             output_directory=carpeta_raw,
             output_filename="temp_copernicus.nc",
+            username=CMEMS_USER,
+            password=CMEMS_PASS,
         )
 
         # --- Leer el NetCDF con xarray -------------------------------------
