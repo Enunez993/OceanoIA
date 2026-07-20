@@ -34,9 +34,11 @@ data/processed/*
 !data/processed/.gitkeep
 
 # Modelos entrenados grandes (subir a Releases o HuggingFace)
-models/*.h5
-models/*.keras
-models/*.pkl
+# Los patrones con '/' intermedio se anclan a la raíz, por eso hace falta
+# repetirlos con '**/' para cubrir también src/train/models/
+**/models/*.h5
+**/models/*.keras
+**/models/*.pkl
 !models/.gitkeep
 
 # Logs

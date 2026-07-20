@@ -160,12 +160,13 @@ Endpoints disponibles:
 
 ## 🤝 Equipo
 
-- [Nombre del estudiante 1] — *email@cuc.ac.cr*
-- [Nombre del estudiante 2] — *email@cuc.ac.cr*
+- [Eduardo Núñez Morales] — *702080987@cuc.ac.cr*
+- [Daniel Nájera Gómez] — *305620467@cuc.cr*
+- [Stephanie Rodriguez Cortes] — *305630770@cuc.cr*
 
-**Profesor:** [Nombre del docente]
+**Profesor:** Osvaldo González Chaves
 **Curso:** Inteligencia Artificial 2026
-**Fecha de entrega:** 18 de julio de 2026
+**Fecha de entrega:** 20 de julio de 2026
 
 ---
 
