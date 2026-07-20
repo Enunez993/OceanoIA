@@ -308,5 +308,5 @@ with tab4:
     st.markdown(
         "**Equipo:** [tu equipo]  ·  **Profesor:** [docente]  ·  "
         "**Curso:** Inteligencia Artificial 2026  ·  "
-        "**Entrega:** 18 de julio 2026"
+        "**Entrega:** 20 de julio 2026"
     )
