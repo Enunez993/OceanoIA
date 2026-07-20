@@ -306,7 +306,8 @@ with tab4:
 
     st.markdown("---")
     st.markdown(
-        "**Equipo:** [tu equipo]  ·  **Profesor:** [docente]  ·  "
+        "**Equipo:** Eduardo Núñez · Daniel Nájera · Stephanie Rodríguez  ·  "
+        "**Profesor:** Osvaldo González Chaves  ·  "
         "**Curso:** Inteligencia Artificial 2026  ·  "
         "**Entrega:** 20 de julio 2026"
     )

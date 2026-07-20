@@ -55,7 +55,7 @@ OceanoIA/
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/<tu-usuario>/OceanoIA.git
+git clone https://github.com/Enunez993/OceanoIA.git
 cd OceanoIA
 
 # 2. Crear entorno virtual
